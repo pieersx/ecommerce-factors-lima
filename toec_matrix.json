@@ -1,0 +1,636 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "source": "Salazar-Kovaleff & Mauricio (2024) - Ten Years of SME E-Commerce Performance",
+    "dimensions": ["Tecnologica", "Organizacional", "Ambiental", "Consumidor"],
+    "total_factors": 74,
+    "year_range": "2011-2021"
+  },
+  "factors": [
+    {
+      "id": "TF01", "name": "Competencia Tecnológica", "dimension": "Tecnologica",
+      "weight": 0.21, "description": "Herramientas de e-marketing, instalaciones de cadena de suministro y confiabilidad de servicio electrónico",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 21,
+      "indicators": [
+        {"type": "element", "name": "Sistema de gestión de inventario visible", "selector": "[data-inventory], .inventory, .stock-info", "expected": true},
+        {"type": "element", "name": "Integración de carrito de compras avanzado", "selector": "[data-cart-api], .cart-integration, [data-commerce-api]", "expected": true},
+        {"type": "text", "name": "Mención de herramientas de e-marketing", "pattern": "(marketing automation|crm|email marketing|segmentaci[oó]n|personalizaci[oó]n|analytics)", "case_insensitive": true},
+        {"type": "metric", "name": "PageSpeed Score", "metric": "pagespeed", "threshold": 70, "direction": "gte"}
+      ]
+    },
+    {
+      "id": "TF02", "name": "Contenido y Experiencia de EC", "dimension": "Tecnologica",
+      "weight": 0.18, "description": "Contenido de EC, experiencia de usuario, presentación y características como pedidos, seguimiento y servicios personalizados",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 7,
+      "indicators": [
+        {"type": "element", "name": "Descripción detallada de productos", "selector": "[data-product-description], .product-description, .product-details", "expected": true},
+        {"type": "element", "name": "Seguimiento de pedidos visible", "selector": "[data-order-tracking], .order-tracking, .track-order, [data-shipment]", "expected": true},
+        {"type": "element", "name": "Galería de imágenes de productos", "selector": ".product-gallery, [data-gallery], .product-images", "expected": true},
+        {"type": "text", "name": "Menciones de personalización", "pattern": "(personalizado|customizaci[oó]n|recomendaciones personalizadas|mi cuenta|preferencias)", "case_insensitive": true},
+        {"type": "metric", "name": "Tiempo de carga LCP", "metric": "lcp", "threshold": 2.5, "direction": "lte"}
+      ]
+    },
+    {
+      "id": "TF03", "name": "Seguridad y Confianza", "dimension": "Tecnologica",
+      "weight": 0.18, "description": "Información de seguridad visiblemente mostrada a visitantes del sitio web",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 7,
+      "indicators": [
+        {"type": "element", "name": "Certificado SSL válido", "selector": null, "expected": true, "check_ssl": true},
+        {"type": "element", "name": "Sello de seguridad visible", "selector": "[data-security-badge], .trust-badge, .ssl-badge, [class*='verified']", "expected": true},
+        {"type": "text", "name": "Política de privacidad accesible", "pattern": "(pol[ií]tica de privacidad|privacidad y cookies|protecci[oó]n de datos|confidencialidad)", "case_insensitive": true},
+        {"type": "text", "name": "Métodos de pago seguros", "pattern": "(pago seguro|ssl|encriptado|visa|mastercard|paypal)", "case_insensitive": true},
+        {"type": "element", "name": "Términos y condiciones", "selector": "a[href*='terms'], a[href*='condiciones'], footer a", "expected": true}
+      ]
+    },
+    {
+      "id": "TF04", "name": "Usabilidad e Interactividad", "dimension": "Tecnologica",
+      "weight": 0.12, "description": "Usabilidad del sitio web con características para comprar fácilmente o acceder a información",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 6,
+      "indicators": [
+        {"type": "element", "name": "Menú de navegación", "selector": "nav, [role='navigation'], .navbar, .menu", "expected": true},
+        {"type": "element", "name": "Búsqueda de productos", "selector": "[type='search'], .search-box, [role='search'], .product-search", "expected": true},
+        {"type": "element", "name": "Breadcrumbs", "selector": ".breadcrumb, [role='navigation'] .breadcrumb, [data-breadcrumb]", "expected": true},
+        {"type": "metric", "name": "CLS", "metric": "cls", "threshold": 0.1, "direction": "lte"}
+      ]
+    },
+    {
+      "id": "TF05", "name": "Diseño", "dimension": "Tecnologica",
+      "weight": 0.12, "description": "Elementos de diseño de EC que mejoran usabilidad, interacción y experiencia de usuario",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 6,
+      "indicators": [
+        {"type": "element", "name": "Diseño responsive", "selector": "meta[name='viewport']", "expected": true},
+        {"type": "metric", "name": "Mobile Usability", "metric": "mobile_friendly", "threshold": 0.8, "direction": "gte"},
+        {"type": "text", "name": "Diseño moderno o UX", "pattern": "(dise[nñ]o moderno|experiencia de usuario|interfaz intuitiva)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF06", "name": "Soporte de Marketing", "dimension": "Tecnologica",
+      "weight": 0.08, "description": "Gestión de marketing con imágenes de productos, descuentos, devoluciones y precios dinámicos",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++/-", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "element", "name": "Banner de promociones", "selector": "[data-promotion], .promo, .discount, .offer, [class*='sale']", "expected": true},
+        {"type": "text", "name": "Ofertas o descuentos", "pattern": "(descuento|oferta|promoci[oó]n|%off|rebaja|precio especial)", "case_insensitive": true},
+        {"type": "text", "name": "Política de devoluciones", "pattern": "(devoluci[oó]n|cambio|reembolso|garant[ií]a|devolver)", "case_insensitive": true},
+        {"type": "element", "name": "Carrito de compras", "selector": "[data-cart], .cart, [class*='shopping-cart']", "expected": true}
+      ]
+    },
+    {
+      "id": "TF07", "name": "Método y Velocidad de Entrega", "dimension": "Tecnologica",
+      "weight": 0.08, "description": "Alternativas de opciones de entrega de productos y costos asociados",
+      "agent": "Procesos", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "text", "name": "Opciones de envío", "pattern": "(env[ií]o gratis|entrega r[aá]pida|mismo d[ií]a|24 horas|retiro|delivery|env[ií]o express)", "case_insensitive": true},
+        {"type": "element", "name": "Cálculo de envío", "selector": "[data-shipping], .shipping, .shipping-calculator, [class*='delivery']", "expected": true},
+        {"type": "text", "name": "Garantía de entrega", "pattern": "(garant[ií]a de entrega|cumplimiento de tiempos|entrega segura)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF08", "name": "Rendimiento No-Funcional", "dimension": "Tecnologica",
+      "weight": 0.05, "description": "Tiempo de respuesta del sitio web",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "metric", "name": "First Contentful Paint", "metric": "fcp", "threshold": 1.8, "direction": "lte"},
+        {"type": "metric", "name": "Time to Interactive", "metric": "tti", "threshold": 3.8, "direction": "lte"}
+      ]
+    },
+    {
+      "id": "TF09", "name": "Calidad de Información", "dimension": "Tecnologica",
+      "weight": 0.05, "description": "Calidad de información proporcionada a todos los socios comerciales y consumidores",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "element", "name": "FAQ o sección de ayuda", "selector": "[data-faq], .faq, .help, .preguntas-frecuentes", "expected": true},
+        {"type": "text", "name": "Información de contacto", "pattern": "(contacto|email|tel[eé]fono|whatsapp|atenci[oó]n al cliente)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF10", "name": "Calidad del Sistema", "dimension": "Tecnologica",
+      "weight": 0.05, "description": "Facilidad de uso percibida, precisión y confiabilidad",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "element", "name": "Validación de formularios", "selector": "input[required], [data-validate], form", "expected": true},
+        {"type": "text", "name": "Garantía de precisión", "pattern": "(precisi[oó]n|confiable|seguro|validado)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF11", "name": "Conectividad a Internet", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Nivel de acceso a Internet establecido para conexiones internas y externas",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "element", "name": "Conexión HTTPS", "selector": null, "check_ssl": true}
+      ]
+    },
+    {
+      "id": "TF12", "name": "Análisis Digital", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Establecimiento de objetivos para evaluar el desempeño actual de un negocio",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Herramientas de análisis", "pattern": "(analytics|m[eé]tricas|estad[ií]sticas|reportes|desempe[nñ]o)", "case_insensitive": true},
+        {"type": "element", "name": "Código de analytics", "selector": "script[src*='analytics'], script[src*='gtag']", "expected": true}
+      ]
+    },
+    {
+      "id": "TF13", "name": "Complejidad Tecnológica", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Complejidad de tecnologías implementadas",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Tecnologías complejas", "pattern": "(inteligencia artificial|machine learning|big data|blockchain|cloud|microservicios)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF14", "name": "Uso Percibido de Internet", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Utilidad del servicio de EC percibida por stakeholders",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Beneficios para el usuario", "pattern": "(beneficio|ventaja|[uú]til|pr[aá]ctica|facilita|simplifica|ahorra tiempo)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF15", "name": "Privacidad", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Elementos que comunican que la información del consumidor es privada",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Protección de privacidad", "pattern": "(privacidad|datos personales|protecci[oó]n de datos|confidencialidad|pol[ií]tica de privacidad)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF16", "name": "Escalabilidad", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Grado de escalabilidad proporcionado por la tecnología",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Escalabilidad", "pattern": "(escalable|crecimiento|capacidad|infraestructura flexible)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF17", "name": "Cloud Computing", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Almacenamiento de datos y gestión en servidores virtuales",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Cloud computing", "pattern": "(cloud|aws|azure|google cloud|infraestructura en la nube)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "TF18", "name": "Compatibilidad", "dimension": "Tecnologica",
+      "weight": 0.02, "description": "Alineación de innovación con valores del adoptante y necesidades",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Compatibilidad con sistemas", "pattern": "(compatible|integraci[oó]n|api|interoperable)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF01", "name": "Servicios de Gestión de Cliente", "dimension": "Organizacional",
+      "weight": 0.26, "description": "Servicios de gestión de cliente antes y después de la venta a través de herramientas como CRM",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 15,
+      "indicators": [
+        {"type": "element", "name": "Cuenta de usuario", "selector": "[data-account], .account, .mi-cuenta, .perfil", "expected": true},
+        {"type": "element", "name": "Historial de pedidos", "selector": "[data-order-history], .order-history, .mis-pedidos", "expected": true},
+        {"type": "text", "name": "Servicio post-venta", "pattern": "(atenci[oó]n al cliente|soporte|garant[ií]a|cambios|devoluciones)", "case_insensitive": true},
+        {"type": "element", "name": "Chat o soporte", "selector": "[data-chat], .chat, .whatsapp-contact, .support-chat", "expected": true}
+      ]
+    },
+    {
+      "id": "OF02", "name": "Innovación", "dimension": "Organizacional",
+      "weight": 0.23, "description": "Actividades relacionadas con innovación EC: soporte, desarrollo de nuevos productos, co-creación y disrupción digital",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++/-", "frequency_in_studies": 13,
+      "indicators": [
+        {"type": "text", "name": "Nuevos productos", "pattern": "(nuevo|lanzamiento|l[ií]nea|colecci[oó]n|innovaci[oó]n|lo m[aá]s nuevo)", "case_insensitive": true},
+        {"type": "element", "name": "Sección Novedades", "selector": "[data-new-products], .new-arrivals, .featured, .novedades", "expected": true},
+        {"type": "text", "name": "Tendencias", "pattern": "(trending|tendencia|popular|bestseller|top ventas)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF03", "name": "Propietario y Partes Interesadas", "dimension": "Organizacional",
+      "weight": 0.21, "description": "Rol del liderazgo de SME en fomentar compromiso con EC",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 12,
+      "indicators": [
+        {"type": "element", "name": "Sección Sobre Nosotros", "selector": "[data-about], .about-us, .nuestra-empresa, [href*='about']", "expected": true},
+        {"type": "text", "name": "Equipo o liderazgo", "pattern": "(equipo|fundador|ceo|gerente|lideres|nuestro compromiso|misi[oó]n|visi[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF04", "name": "Planificación Estratégica", "dimension": "Organizacional",
+      "weight": 0.19, "description": "Actividad de planificación estratégica que realiza el negocio e impacta EC",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 11,
+      "indicators": [
+        {"type": "text", "name": "Misión o visión", "pattern": "(misi[oó]n|visi[oó]n|objetivo|estrategia|prop[oó]sito|compromiso)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF05", "name": "Actividades de Marketing", "dimension": "Organizacional",
+      "weight": 0.14, "description": "Actividades de marketing EC como SEO/SEM, publicidad display, email, presencia móvil y redes sociales",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++/-", "frequency_in_studies": 8,
+      "indicators": [
+        {"type": "element", "name": "Redes sociales", "selector": "a[href*='facebook'], a[href*='instagram'], a[href*='twitter'], a[href*='tiktok']", "expected": true},
+        {"type": "text", "name": "Marketing digital", "pattern": "(redes sociales|instagram|facebook|tiktok|youtube|newsletter|email|publicidad)", "case_insensitive": true},
+        {"type": "element", "name": "Newsletter", "selector": "[data-newsletter], .newsletter, .subscribe, .email-signup", "expected": false}
+      ]
+    },
+    {
+      "id": "OF06", "name": "Estructura Interorganizacional", "dimension": "Organizacional",
+      "weight": 0.12, "description": "Partnerships y alianzas: confianza, presión, distancia geográfica, gestión de relaciones externas",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++/-", "frequency_in_studies": 7,
+      "indicators": [
+        {"type": "text", "name": "Partnerships", "pattern": "(alianza|partner|colaboraci[oó]n|integraci[oó]n|proveedor|distribuidor)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF07", "name": "Recursos Financieros", "dimension": "Organizacional",
+      "weight": 0.12, "description": "Presupuesto asignado para configurar, actualizar y mejorar la plataforma de EC",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 7,
+      "indicators": [
+        {"type": "text", "name": "Inversión en tecnología", "pattern": "(inversi[oó]n|desarrollo|mejora|actualizaci[oó]n|implementaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF08", "name": "Gestión de Talento", "dimension": "Organizacional",
+      "weight": 0.12, "description": "Personal con experiencia en IT y gestión de EC, incluyendo personal de soporte y capacitación",
+      "agent": "Procesos", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 7,
+      "indicators": [
+        {"type": "text", "name": "Equipo especializado", "pattern": "(equipo|profesional|experto|especialista|capacitaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF09", "name": "Comunicación Inter-área", "dimension": "Organizacional",
+      "weight": 0.07, "description": "Capacidad y cultura para desarrollar actividades entre Marketing y Operaciones",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "text", "name": "Integración de procesos", "pattern": "(integrado|coordinado|alineado|sincronizado|colaborativo)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF10", "name": "Gestión del Conocimiento", "dimension": "Organizacional",
+      "weight": 0.07, "description": "Capacidad de compartir información de cliente y desarrollos de mercado",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "element", "name": "Base de conocimiento", "selector": "[data-kb], .knowledge-base, .help-center, .docs", "expected": false},
+        {"type": "text", "name": "Documentación", "pattern": "(conocimiento|documentaci[oó]n|base de datos|informaci[oó]n compartida)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF11", "name": "Tamaño de la Empresa", "dimension": "Organizacional",
+      "weight": 0.07, "description": "El tamaño organizacional refleja los recursos operativos de la empresa",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "text", "name": "Indicadores de tamaño", "pattern": "(empleado|sucursal|oficina|ubicaci[oó]n|operaci[oó]n en)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF12", "name": "Información Transparente y Visible", "dimension": "Organizacional",
+      "weight": 0.07, "description": "Un ambiente transparente facilita a compradores/vendedores obtener información competitiva",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "element", "name": "Información de precios", "selector": "[data-price], .price, [class*='pricing']", "expected": true},
+        {"type": "text", "name": "Transparencia", "pattern": "(transparencia|claro|visible|honesto|sincero)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF13", "name": "Calidad del Servicio", "dimension": "Organizacional",
+      "weight": 0.07, "description": "Abundancia de información que genera más posibilidades de negociación",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "text", "name": "Calidad mencionada", "pattern": "(calidad|certificaci[oó]n|est[aá]ndar|garant[ií]a|premium|excelencia)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF14", "name": "Conocimiento IT del Equipo Directivo", "dimension": "Organizacional",
+      "weight": 0.05, "description": "Actividades de búsqueda dirigidas a mejorar la calidad de servicio en EC",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 3,
+      "indicators": [
+        {"type": "text", "name": "Liderazgo tecnológico", "pattern": "(liderazgo|visi[oó]n|innovador|tecnol[oó]gico|digital)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF15", "name": "Costo Financiero Percibido", "dimension": "Organizacional",
+      "weight": 0.05, "description": "Los costos de implementación de tecnologías pueden ser inhibitorios para las SMEs",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++/-", "frequency_in_studies": 3,
+      "indicators": [
+        {"type": "text", "name": "Asequibilidad", "pattern": "(econ[oó]mico|asequible|costo-efectivo|presupuesto|accesible|barato)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF16", "name": "Compromiso del CEO", "dimension": "Organizacional",
+      "weight": 0.04, "description": "El compromiso del CEO con los procesos y tecnología de EC",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "element", "name": "Biografía CEO", "selector": "[data-ceo], [class*='ceo'], [class*='founder']", "expected": false}
+      ]
+    },
+    {
+      "id": "OF17", "name": "Habilidades y Experiencia en IT", "dimension": "Organizacional",
+      "weight": 0.04, "description": "Habilidades y experiencia en IT en la organización",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "Pericia técnica", "pattern": "(desarrollador|ingeniero|t[eé]cnico|programador|especialista it)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF18", "name": "Habilidades de Marketing", "dimension": "Organizacional",
+      "weight": 0.04, "description": "Evidenciada por competencia en marketing digital",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "Marketing digital sofisticado", "pattern": "(seo|sem|marketing automation|segmentaci[oó]n|personalizaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF19", "name": "Capacidad de Red", "dimension": "Organizacional",
+      "weight": 0.04, "description": "La capacidad de red fomenta interdependencias organizacionales internas y externas",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "Red o comunidad", "pattern": "(red|comunidad|ecosistema|colaboraci[oó]n|network|conexi[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF20", "name": "Competencia Tecnológica Percibida", "dimension": "Organizacional",
+      "weight": 0.04, "description": "Las expectativas de desempeño de EC implican opiniones sobre la infraestructura técnica",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "Competencia técnica", "pattern": "(competente|capaz|experto|confiable|robusto)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF21", "name": "Investigación y Desarrollo", "dimension": "Organizacional",
+      "weight": 0.04, "description": "Actividades de creación de valor y proceso de adaptación continua",
+      "agent": "ExperienciaUsuario", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "I+D", "pattern": "(investigaci[oó]n|desarrollo|laboratorio|experimento|innovaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF22", "name": "Calidad Específica del Proveedor", "dimension": "Organizacional",
+      "weight": 0.04, "description": "Reputación del negocio minorista: conciencia, reputación, descuentos",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "element", "name": "Testimonios o reseñas", "selector": "[data-reviews], .reviews, .testimonios, .rese[nñ]as", "expected": false},
+        {"type": "text", "name": "Reconocimiento o premios", "pattern": "(premio|reconocimiento|certificado|acreditado|galardonado)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF23", "name": "Innovación del CEO", "dimension": "Organizacional",
+      "weight": 0.05, "description": "Orientación de innovación del CEO: influencia idealizada, motivación, estimulación intelectual",
+      "agent": "ExperienciaUsuario", "applicability": "Solo si aplica", "impact": "++/-", "frequency_in_studies": 3,
+      "indicators": [
+        {"type": "text", "name": "Liderazgo innovador", "pattern": "(transformaci[oó]n|disrupci[oó]n|futuro|visi[oó]n|liderazgo|influencia)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF24", "name": "Era de Comercio Electrónico", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Número de años en los que las empresas han estado utilizando EC",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "--", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Antigüedad", "pattern": "(desde|desde hace|a[nñ]os|fundada|establecida en|operando desde)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF25", "name": "Orientación de Explotación", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Conjunto de prácticas que refinan y expanden habilidades y recursos existentes",
+      "agent": "ExperienciaUsuario", "applicability": "Solo si aplica", "impact": "--", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Mejora continua", "pattern": "(mejora continua|optimizaci[oó]n|refinamiento|expansion|crecimiento)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF26", "name": "Orientación de Exploración", "dimension": "Organizacional",
+      "weight": 0.04, "description": "Prácticas que desarrollan nuevas competencias a través de experimentación",
+      "agent": "ExperienciaUsuario", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Exploración estratégica", "pattern": "(exploraci[oó]n|nuevo mercado|nuevas competencias|experimentaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF27", "name": "Tendencia del Fundador a Asumir Riesgos", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Probabilidad percibida de recibir recompensas asociadas con el éxito de una situación propuesta",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Toma de riesgos", "pattern": "(riesgo|desaf[ií]o|oportunidad|emprendimiento|audacia)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF28", "name": "Internacionalización", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Orientación a la internacionalización de las SMEs",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Operación internacional", "pattern": "(internacional|global|m[uú]ltiples pa[ií]ses|exportaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF29", "name": "Motivación Personal", "dimension": "Organizacional",
+      "weight": 0.02, "description": "El nivel de motivación personal del equipo influye en el éxito del proceso de innovación",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Motivación del equipo", "pattern": "(pasi[oó]n|dedicaci[oó]n|compromiso|entusiasmo|motivado)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF30", "name": "Estrategia de Tecnología de Comunicación", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Existencia de estrategias de tecnología de información y comunicación",
+      "agent": "Tecnologico", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Estrategia de comunicación", "pattern": "(estrategia|comunicaci[oó]n|tecnolog[ií]a|plan|pol[ií]tica)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF31", "name": "Actividades de EC Offline", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Visita de ventas, reunión offline y videoconferencia online",
+      "agent": "Procesos", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Integración omnichannel", "pattern": "(tienda f[ií]sica|presencial|videoconferencia|reuni[oó]n|omnichannel)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "OF32", "name": "Preparación Digital", "dimension": "Organizacional",
+      "weight": 0.02, "description": "Conjunto de infraestructuras de tecnología de información y recursos humanos",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Transformación digital", "pattern": "(transformaci[oó]n digital|madurez digital|capacidad digital|preparado|listo)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF01", "name": "Presión de la Industria", "dimension": "Ambiental",
+      "weight": 0.34, "description": "Intensidad competitiva, presión del cliente y presión institucional",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 15,
+      "indicators": [
+        {"type": "text", "name": "Competencia", "pattern": "(competencia|competidor|competitivo|liderazgo|ventaja competitiva)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF02", "name": "Apoyo Gubernamental", "dimension": "Ambiental",
+      "weight": 0.23, "description": "El respaldo gubernamental ayuda a la adopción de EC",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 8,
+      "indicators": [
+        {"type": "text", "name": "Certificaciones gubernamentales", "pattern": "(certificaci[oó]n|acreditado|aprobado|licencia|registro|superintendencia|sunat|indecopi)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF03", "name": "Economía", "dimension": "Ambiental",
+      "weight": 0.17, "description": "Ambiente económico, desempleo, contracción económica, precios, flujos de capital",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++/-", "frequency_in_studies": 6,
+      "indicators": [
+        {"type": "text", "name": "Precios competitivos", "pattern": "(precio competitivo|oferta|descuento|promoci[oó]n|asequible)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF04", "name": "Sociocultural", "dimension": "Ambiental",
+      "weight": 0.17, "description": "Movimientos globales como consumo, cambios de hábito, dinámicas de fuerza laboral",
+      "agent": "ExperienciaUsuario", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 6,
+      "indicators": [
+        {"type": "text", "name": "Inclusión y diversidad", "pattern": "(inclusi[oó]n|diversidad|responsabilidad social|sostenible|igualdad)", "case_insensitive": true},
+        {"type": "text", "name": "Adaptación cultural local", "pattern": "(local|per[uú]|lima|contexto cultural|tradici[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF05", "name": "Tecnología e Innovación en la Industria", "dimension": "Ambiental",
+      "weight": 0.11, "description": "Su presencia determina la capacidad de uso por las SMEs",
+      "agent": "Tecnologico", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 4,
+      "indicators": [
+        {"type": "text", "name": "Tecnologías emergentes", "pattern": "(ia|inteligencia artificial|blockchain|iot|realidad aumentada|metaverso)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF06", "name": "Soporte Externo en Sistemas de Información", "dimension": "Ambiental",
+      "weight": 0.09, "description": "El outsourcing está permitido desde un punto de vista legal",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 3,
+      "indicators": [
+        {"type": "text", "name": "Terceros o proveedores", "pattern": "(proveedor|tercero|outsourcing|agencia|socio tecnol[oó]gico)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF07", "name": "Aspectos Legales", "dimension": "Ambiental",
+      "weight": 0.06, "description": "Temas legales definidos globalmente, derechos humanos, regulación mundial",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "Cumplimiento legal", "pattern": "(legal|compliance|regulaci[oó]n|ley|impuesto|aduanal)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF08", "name": "Clima Empresarial", "dimension": "Ambiental",
+      "weight": 0.03, "description": "Clima económico/comercial de empresas comerciales",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Clima empresarial", "pattern": "(mercado|crecimiento|oportunidad|desaf[ií]o|contexto econ[oó]mico)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF09", "name": "Características del Ambiente", "dimension": "Ambiental",
+      "weight": 0.03, "description": "Dinamismo ambiental, complejidad ambiental y hostilidad ambiental",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Resiliencia", "pattern": "(resiliente|adaptable|flexible|din[aá]mico|volatilidad)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF10", "name": "Competitividad Global", "dimension": "Ambiental",
+      "weight": 0.03, "description": "Índice de competitividad que mide la competitividad nacional",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Competitividad global", "pattern": "(global|internacional|competitivo|mundial|exportaci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF11", "name": "Redes de Industria", "dimension": "Ambiental",
+      "weight": 0.03, "description": "Las relaciones facilitan el intercambio de conocimiento entre individuos y empresas",
+      "agent": "Procesos", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Redes o asociaciones", "pattern": "(asociaci[oó]n|red|industria|cluster|gremio|miembro)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF12", "name": "Tipo de Industria", "dimension": "Ambiental",
+      "weight": 0.03, "description": "Tipo de ambiente en el que opera la SME",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Sector específico", "pattern": "(retail|moda|alimentos|electr[oó]nica|servicios|manufactura|sector)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF13", "name": "Barreras de Entrada al Mercado", "dimension": "Ambiental",
+      "weight": 0.03, "description": "Efectos de las barreras de entrada al mercado en el dinero de empresas comerciales",
+      "agent": "Procesos", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Facilidad de acceso", "pattern": "(acceso|barrera|entrada|oportunidad|disponibilidad)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "EF14", "name": "Productos Sustitutos", "dimension": "Ambiental",
+      "weight": 0.03, "description": "La posibilidad de encontrar productos similares en otros mercados",
+      "agent": "ExperienciaUsuario", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Diferenciación", "pattern": "([uú]nico|diferente|sustituto|alternativa|comparable)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF01", "name": "Utilidad Percibida", "dimension": "Consumidor",
+      "weight": 0.56, "description": "Utilidad y beneficios de EC percibida por diferentes partes",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 5,
+      "indicators": [
+        {"type": "element", "name": "Sección de beneficios", "selector": "[data-benefits], .benefits, .ventajas, [class*='why-us']", "expected": true},
+        {"type": "text", "name": "Propuesta de valor", "pattern": "(beneficio|ventaja|ahorro|facilidad|comodidad|r[aá]pido|seguro)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF02", "name": "Confianza del Cliente", "dimension": "Consumidor",
+      "weight": 0.22, "description": "Confianza del cliente en los procesos comerciales",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "element", "name": "Testimonios o reseñas", "selector": "[data-reviews], .reviews, .testimonios", "expected": false},
+        {"type": "text", "name": "Confiabilidad", "pattern": "(confiable|confianza|seguro|certificado|verificado|trusted)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF03", "name": "Efectos Estacionales", "dimension": "Consumidor",
+      "weight": 0.17, "description": "Estacionalidad de servicios",
+      "agent": "ExperienciaUsuario", "applicability": "Solo si aplica", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "text", "name": "Campañas estacionales", "pattern": "(navidad|a[nñ]o nuevo|verano|invierno|estaci[oó]n|campa[nñ]a|promoci[oó]n temporal)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF04", "name": "Experiencia Web Satisfactoria", "dimension": "Consumidor",
+      "weight": 0.22, "description": "Proporcionar experiencia web positiva a clientes",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 2,
+      "indicators": [
+        {"type": "metric", "name": "PageSpeed Score", "metric": "pagespeed", "threshold": 70, "direction": "gte"},
+        {"type": "metric", "name": "LCP", "metric": "lcp", "threshold": 2.5, "direction": "lte"}
+      ]
+    },
+    {
+      "id": "CF05", "name": "Valor de la Experiencia", "dimension": "Consumidor",
+      "weight": 0.11, "description": "Provisión de información relevante, facilidad de uso y servicio al cliente",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Información útil", "pattern": "(gu[ií]a|tutorial|consejo|ayuda|c[oó]mo|instrucci[oó]n)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF06", "name": "Calidad de la Relación", "dimension": "Consumidor",
+      "weight": 0.11, "description": "La satisfacción del cliente y la confianza son vitales para construir relaciones duraderas",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Programa de lealtad", "pattern": "(lealtad|programa|cliente frecuente|vip|rewards|puntos)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF07", "name": "Percepción de Valor", "dimension": "Consumidor",
+      "weight": 0.11, "description": "Beneficios netos que los clientes reciben a través de la compra",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Valor económico", "pattern": "(valor|precio justo|relaci[oó]n calidad-precio|econom[ií]a|ahorros)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF08", "name": "Valores Personales", "dimension": "Consumidor",
+      "weight": 0.11, "description": "El consumo tiene significado social, dando forma a la identidad del consumidor",
+      "agent": "ExperienciaUsuario", "applicability": "Lima específico", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "text", "name": "Valores culturales locales", "pattern": "(valores|identidad|comunidad|pertenencia|social|cultural)", "case_insensitive": true}
+      ]
+    },
+    {
+      "id": "CF09", "name": "Patrones de Uso", "dimension": "Consumidor",
+      "weight": 0.11, "description": "Nivel de adopción del uso de EC",
+      "agent": "ExperienciaUsuario", "applicability": "Siempre", "impact": "++", "frequency_in_studies": 1,
+      "indicators": [
+        {"type": "element", "name": "Facilidad de compra", "selector": "[data-checkout], .checkout, [class*='comprar']", "expected": true},
+        {"type": "text", "name": "Frecuencia de uso", "pattern": "(habitual|regular|frecuente|diario|semanal)", "case_insensitive": true}
+      ]
+    }
+  ]
+}
