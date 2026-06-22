@@ -34,6 +34,7 @@ def initialize_database() -> None:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 created_at TEXT NOT NULL,
                 url TEXT NOT NULL,
+                pages_reviewed INTEGER NOT NULL DEFAULT 0,
                 warnings_json TEXT NOT NULL,
                 pec_score REAL NOT NULL,
                 classification TEXT NOT NULL,
@@ -61,6 +62,9 @@ def initialize_database() -> None:
             );
             """
         )
+        columns = {row[1] for row in conn.execute("PRAGMA table_info(audits)").fetchall()}
+        if "pages_reviewed" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN pages_reviewed INTEGER NOT NULL DEFAULT 0")
         conn.commit()
     finally:
         conn.close()
@@ -71,11 +75,12 @@ def save_audit(result: dict) -> int:
     conn = connection()
     try:
         cursor = conn.execute(
-            """INSERT INTO audits(created_at, url, warnings_json, pec_score, classification, dimensions_json)
-               VALUES (?, ?, ?, ?, ?, ?)""",
+            """INSERT INTO audits(created_at, url, pages_reviewed, warnings_json, pec_score, classification, dimensions_json)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
             (
                 datetime.now(timezone.utc).isoformat(),
                 result["url"],
+                result.get("pages_reviewed", 0),
                 json.dumps(result.get("warnings", []), ensure_ascii=False),
                 result["pec_score"],
                 result["classification"],
@@ -107,7 +112,7 @@ def list_audits(limit: int = 50) -> list[dict]:
     conn = connection()
     try:
         rows = conn.execute(
-            "SELECT id, created_at, url, pec_score, classification FROM audits ORDER BY id DESC LIMIT ?", (limit,)
+            "SELECT id, created_at, url, pages_reviewed, pec_score, classification FROM audits ORDER BY id DESC LIMIT ?", (limit,)
         ).fetchall()
     finally:
         conn.close()

@@ -13,6 +13,7 @@ class StorageTests(unittest.TestCase):
             result = {
                 "url": "https://example.test",
                 "warnings": [],
+                "pages_reviewed": 15,
                 "pec_score": 1.0,
                 "classification": "Inicial",
                 "dimension_scores": {"Tecnológica": {"score": 1.0, "max": 1}},
@@ -25,6 +26,7 @@ class StorageTests(unittest.TestCase):
             audit_id = storage.save_audit(result)
             loaded = storage.get_audit(audit_id)
             self.assertEqual(loaded["pec_score"], 1.0)
+            self.assertEqual(loaded["pages_reviewed"], 15)
             self.assertEqual(loaded["factors"][0]["id"], "T01")
             if original is None:
                 os.environ.pop("DATABASE_PATH", None)

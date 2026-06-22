@@ -176,6 +176,16 @@ def criterion_example(factor: dict) -> str:
     return examples.get(factor["id"], "Se revisa evidencia pública relacionada con este FCE.")
 
 
+def coverage_label(pages_reviewed: int) -> str:
+    if pages_reviewed >= 12:
+        return "Alta"
+    if pages_reviewed >= 6:
+        return "Media"
+    if pages_reviewed >= 1:
+        return "Baja"
+    return "No disponible"
+
+
 st.title("PEC Auditor")
 st.caption("Diagnóstico transparente de 30 factores críticos de éxito observables en tiendas e-commerce.")
 tabs = st.tabs(["Nueva auditoría", "Resumen PEC", "Factores y evidencia", "Brechas y recomendaciones", "Historial", "Feedback"])
@@ -186,11 +196,12 @@ with tabs[0]:
     if st.session_state.audit_notice and st.session_state.audit:
         completed = st.session_state.audit
         st.success(f"Auditoría completada y guardada localmente con ID #{st.session_state.audit_notice}.")
-        m1, m2, m3, m4 = st.columns(4)
+        m1, m2, m3, m4, m5 = st.columns(5)
         m1.metric("Índice PEC", f"{completed['pec_score']}/30")
         m2.metric("Nivel", completed["classification"])
         m3.metric("Páginas revisadas", completed.get("pages_reviewed", "N/D"))
-        m4.metric("Factores evaluados", len(completed["factors"]))
+        m4.metric("Cobertura", coverage_label(completed.get("pages_reviewed", 0)))
+        m5.metric("Factores evaluados", len(completed["factors"]))
         st.info("Los resultados ya están disponibles en Resumen PEC, Factores y evidencia, Brechas e Historial.")
         st.session_state.audit_notice = None
     with st.form("new_audit"):
@@ -212,10 +223,13 @@ with tabs[1]:
     if not result:
         st.info("Realiza una auditoría para ver el resumen ejecutivo.")
     else:
-        a, b, c = st.columns(3)
+        a, b, c, d = st.columns(4)
         a.metric("Índice PEC", f"{result['pec_score']}/30")
         b.metric("Nivel de madurez", result["classification"])
         c.metric("Factores revisados", len(result["factors"]))
+        pages_reviewed = result.get("pages_reviewed", 0)
+        d.metric("Cobertura de auditoría", coverage_label(pages_reviewed), f"{pages_reviewed}/15 páginas" if pages_reviewed else "Sin dato histórico")
+        st.caption("El PEC refleja madurez observable en la web; no mide ventas, utilidades ni éxito financiero de la empresa.")
         counts = fce_counts(result["factors"])
         count_columns = st.columns(4)
         for column, row in zip(count_columns, counts.to_dict("records")):
@@ -331,7 +345,7 @@ with tabs[4]:
     else:
         st.caption(f"{len(history)} auditorías guardadas en la base de datos local SQLite.")
         st.dataframe(
-            pd.DataFrame(history).rename(columns={"id": "ID", "created_at": "Fecha UTC", "url": "URL", "pec_score": "PEC", "classification": "Nivel"}),
+            pd.DataFrame(history).rename(columns={"id": "ID", "created_at": "Fecha UTC", "url": "URL", "pages_reviewed": "Páginas", "pec_score": "PEC", "classification": "Nivel"}),
             use_container_width=True,
             hide_index=True,
         )
