@@ -24,19 +24,24 @@ def load_catalog() -> list[dict]:
         return json.load(handle)
 
 
-def _query_pagespeed(url: str, api_key: str, timeout: int = 30) -> dict | None:
-    """Call PageSpeed Insights API and return lighthouse result or None on failure."""
+def _query_pagespeed(url: str, api_key: str, timeout: int = 30) -> tuple[dict | None, str | None]:
+    """Call PageSpeed Insights and retain a safe, user-facing failure reason."""
     if requests is None:
-        return None
+        return None, "La librería requests no está disponible para consultar Google PageSpeed."
     endpoint = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
     params = {"url": url, "strategy": "mobile", "key": api_key}
     try:
         resp = requests.get(endpoint, params=params, timeout=timeout)
         resp.raise_for_status()
         data = resp.json()
-        return data.get("lighthouseResult")
-    except Exception:
-        return None
+        return data.get("lighthouseResult"), None
+    except requests.Timeout:
+        return None, f"Google PageSpeed no respondió dentro de {timeout} segundos."
+    except requests.HTTPError as exc:
+        code = exc.response.status_code if exc.response is not None else "desconocido"
+        return None, f"Google PageSpeed respondió con HTTP {code}. Revise la clave, restricciones y cuota de la API."
+    except requests.RequestException:
+        return None, "No se pudo conectar con Google PageSpeed desde este equipo."
 
 
 def _pagespeed_status(score: float) -> str:
@@ -68,9 +73,9 @@ class FactorIdentificationAgent:
             api_key = os.getenv("PAGESPEED_API_KEY", "")
             if not api_key:
                 return "not_evaluable", "No evaluable automáticamente sin una API de rendimiento configurada.", audit_url
-            result = _query_pagespeed(audit_url, api_key)
+            result, api_error = _query_pagespeed(audit_url, api_key)
             if result is None:
-                return "not_evaluable", "No se pudo obtener métricas de rendimiento de la API.", audit_url
+                return "not_evaluable", api_error or "No se pudo obtener métricas de rendimiento de la API.", audit_url
             perf_score = result.get("categories", {}).get("performance", {}).get("score", 0)
             audits = result.get("audits", {})
             fcp = audits.get("first-contentful-paint", {}).get("displayValue", "N/A")
