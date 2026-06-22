@@ -38,7 +38,7 @@ if "audit_notice" not in st.session_state:
 
 def build_result_interactive(url: str) -> dict:
     """Run audit with interactive st.status updates."""
-    max_pages = max(1, min(int(os.getenv("AUDIT_MAX_PAGES", "10")), 10))
+    max_pages = max(1, min(int(os.getenv("AUDIT_MAX_PAGES", "15")), 15))
     timeout = int(os.getenv("AUDIT_TIMEOUT_SECONDS", "20"))
 
     with st.status("Auditoría en progreso...", expanded=True) as status:
@@ -182,7 +182,7 @@ tabs = st.tabs(["Nueva auditoría", "Resumen PEC", "Factores y evidencia", "Brec
 
 with tabs[0]:
     st.subheader("Auditar una tienda pública")
-    st.write("La exploración revisa hasta 10 páginas públicas del mismo dominio. No inicia sesión ni recopila datos personales.")
+    st.write("La exploración revisa hasta 15 páginas públicas del mismo dominio. No inicia sesión ni recopila datos personales.")
     if st.session_state.audit_notice and st.session_state.audit:
         completed = st.session_state.audit
         st.success(f"Auditoría completada y guardada localmente con ID #{st.session_state.audit_notice}.")
