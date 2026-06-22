@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 from urllib.parse import urlparse
+
+try:
+    import requests
+except ImportError:
+    requests = None  # type: ignore[assignment]
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +22,30 @@ SCORES = {"present": 1.0, "partial": 0.5, "absent": 0.0, "not_evaluable": 0.0}
 def load_catalog() -> list[dict]:
     with CATALOG_PATH.open(encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def _query_pagespeed(url: str, api_key: str, timeout: int = 30) -> dict | None:
+    """Call PageSpeed Insights API and return lighthouse result or None on failure."""
+    if requests is None:
+        return None
+    endpoint = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
+    params = {"url": url, "strategy": "mobile", "key": api_key}
+    try:
+        resp = requests.get(endpoint, params=params, timeout=timeout)
+        resp.raise_for_status()
+        data = resp.json()
+        return data.get("lighthouseResult")
+    except Exception:
+        return None
+
+
+def _pagespeed_status(score: float) -> str:
+    """Map PageSpeed performance score (0-1) to factor status."""
+    if score >= 0.9:
+        return "present"
+    if score >= 0.5:
+        return "partial"
+    return "absent"
 
 
 class FactorIdentificationAgent:
@@ -35,7 +65,25 @@ class FactorIdentificationAgent:
         if detector == "https":
             return ("present", "La URL pública utiliza HTTPS.", audit_url) if urlparse(audit_url).scheme == "https" else ("absent", "La URL pública no utiliza HTTPS.", audit_url)
         if detector == "pagespeed":
-            return "not_evaluable", "No evaluable automáticamente sin una API de rendimiento configurada.", audit_url
+            api_key = os.getenv("PAGESPEED_API_KEY", "")
+            if not api_key:
+                return "not_evaluable", "No evaluable automáticamente sin una API de rendimiento configurada.", audit_url
+            result = _query_pagespeed(audit_url, api_key)
+            if result is None:
+                return "not_evaluable", "No se pudo obtener métricas de rendimiento de la API.", audit_url
+            perf_score = result.get("categories", {}).get("performance", {}).get("score", 0)
+            audits = result.get("audits", {})
+            fcp = audits.get("first-contentful-paint", {}).get("displayValue", "N/A")
+            lcp = audits.get("largest-contentful-paint", {}).get("displayValue", "N/A")
+            tbt = audits.get("total-blocking-time", {}).get("displayValue", "N/A")
+            cls_val = audits.get("cumulative-layout-shift", {}).get("displayValue", "N/A")
+            status = _pagespeed_status(perf_score)
+            pct = int(perf_score * 100)
+            evidence = (
+                f"PageSpeed Insights: {pct}/100 | "
+                f"FCP: {fcp} | LCP: {lcp} | TBT: {tbt} | CLS: {cls_val}"
+            )
+            return status, evidence, audit_url
         if detector == "viewport":
             page = self._evidence_page(pages, lambda item: item["has_viewport"])
             return ("present", "Se encontró meta viewport.", page["url"]) if page else ("absent", "No se encontró meta viewport en las páginas revisadas.", audit_url)

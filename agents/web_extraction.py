@@ -13,7 +13,7 @@ from agents.url_acquisition import URLAcquisitionAgent
 
 class WebExtractionAgent:
     def __init__(self, max_pages: int = 10, timeout: int = 20) -> None:
-        self.max_pages = max(1, min(max_pages, 10))
+        self.max_pages = max(1, max_pages)
         self.timeout = timeout
         self.validator = URLAcquisitionAgent()
 
