@@ -44,11 +44,60 @@ class WebExtractionAgent:
             return response, current, ""
         return None, current, "Se excedió el límite de redirecciones."
 
+    def _brand_assets(self, soup: BeautifulSoup, final_url: str) -> dict:
+        parsed = urlparse(final_url)
+        domain = parsed.netloc.lower()
+        brand_name = ""
+        site_name = soup.select_one('meta[property="og:site_name"], meta[name="application-name"]')
+        if site_name and site_name.get("content"):
+            brand_name = site_name["content"].strip()
+        if not brand_name and soup.title:
+            brand_name = soup.title.get_text(" ", strip=True).split("|")[0].split("-")[0].strip()
+        if not brand_name:
+            brand_name = domain.replace("www.", "")
+
+        candidates: list[tuple[str, str]] = []
+        selectors = [
+            ('meta[property="og:logo"]', "content", "Open Graph logo"),
+            ('meta[property="og:image"]', "content", "Open Graph image"),
+            ('link[rel~="apple-touch-icon"]', "href", "Apple touch icon"),
+            ('link[rel~="icon"]', "href", "Favicon"),
+            ('link[rel~="shortcut"][rel~="icon"]', "href", "Favicon"),
+        ]
+        for selector, attr, source in selectors:
+            for item in soup.select(selector):
+                value = item.get(attr)
+                if value:
+                    candidates.append((urljoin(final_url, value), source))
+        for image in soup.find_all("img"):
+            marker = " ".join(
+                str(image.get(attr, "")) for attr in ["alt", "class", "id", "src"]
+            ).lower()
+            if any(token in marker for token in ["logo", "brand", "marca"]):
+                src = image.get("src") or image.get("data-src")
+                if src:
+                    candidates.append((urljoin(final_url, src), "HTML logo image"))
+
+        logo_url, logo_source = "", ""
+        for candidate, source in candidates:
+            valid, normalized, _ = self.validator.validate_url(candidate)
+            if valid and urlparse(normalized).scheme in {"http", "https"}:
+                logo_url, logo_source = normalized, source
+                break
+
+        return {
+            "brand_name": brand_name,
+            "logo_url": logo_url,
+            "logo_source": logo_source,
+            "site_domain": domain,
+        }
+
     def crawl(self, initial_url: str) -> dict:
         queue = deque([initial_url])
         visited: set[str] = set()
         pages: list[dict] = []
         warnings: list[str] = []
+        brand_assets: dict = {}
         origin = initial_url
         session = requests.Session()
         session.headers.update({"User-Agent": "PEC-Auditor/1.0 (academic public audit)"})
@@ -64,6 +113,8 @@ class WebExtractionAgent:
             if not response or "text/html" not in response.headers.get("content-type", "").lower():
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
+            if not brand_assets:
+                brand_assets = self._brand_assets(soup, final_url)
             for ignored in soup(["script", "style", "noscript"]):
                 ignored.decompose()
             text = soup.get_text(" ", strip=True)
@@ -94,6 +145,7 @@ class WebExtractionAgent:
         return {
             "pages": pages,
             "warnings": warnings,
+            "brand_assets": brand_assets,
             "performance": {
                 "available": False,
                 "reason": "No evaluable automáticamente sin una API de rendimiento configurada.",

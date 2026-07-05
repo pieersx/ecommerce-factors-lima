@@ -35,6 +35,14 @@ def initialize_database() -> None:
                 created_at TEXT NOT NULL,
                 url TEXT NOT NULL,
                 pages_reviewed INTEGER NOT NULL DEFAULT 0,
+                is_ecommerce INTEGER NOT NULL DEFAULT 1,
+                qualification_status TEXT NOT NULL DEFAULT 'qualified',
+                ecommerce_evidence_json TEXT NOT NULL DEFAULT '[]',
+                confidence_score INTEGER NOT NULL DEFAULT 0,
+                confidence_label TEXT NOT NULL DEFAULT 'No disponible',
+                confidence_reasons_json TEXT NOT NULL DEFAULT '[]',
+                brand_assets_json TEXT NOT NULL DEFAULT '{}',
+                ai_review_json TEXT,
                 warnings_json TEXT NOT NULL,
                 pec_score REAL NOT NULL,
                 classification TEXT NOT NULL,
@@ -65,6 +73,22 @@ def initialize_database() -> None:
         columns = {row[1] for row in conn.execute("PRAGMA table_info(audits)").fetchall()}
         if "pages_reviewed" not in columns:
             conn.execute("ALTER TABLE audits ADD COLUMN pages_reviewed INTEGER NOT NULL DEFAULT 0")
+        if "is_ecommerce" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN is_ecommerce INTEGER NOT NULL DEFAULT 1")
+        if "qualification_status" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN qualification_status TEXT NOT NULL DEFAULT 'qualified'")
+        if "ecommerce_evidence_json" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN ecommerce_evidence_json TEXT NOT NULL DEFAULT '[]'")
+        if "confidence_score" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN confidence_score INTEGER NOT NULL DEFAULT 0")
+        if "confidence_label" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN confidence_label TEXT NOT NULL DEFAULT 'No disponible'")
+        if "confidence_reasons_json" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN confidence_reasons_json TEXT NOT NULL DEFAULT '[]'")
+        if "brand_assets_json" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN brand_assets_json TEXT NOT NULL DEFAULT '{}'")
+        if "ai_review_json" not in columns:
+            conn.execute("ALTER TABLE audits ADD COLUMN ai_review_json TEXT")
         conn.commit()
     finally:
         conn.close()
@@ -75,12 +99,24 @@ def save_audit(result: dict) -> int:
     conn = connection()
     try:
         cursor = conn.execute(
-            """INSERT INTO audits(created_at, url, pages_reviewed, warnings_json, pec_score, classification, dimensions_json)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            """INSERT INTO audits(
+                   created_at, url, pages_reviewed, is_ecommerce, qualification_status, ecommerce_evidence_json,
+                   confidence_score, confidence_label, confidence_reasons_json, brand_assets_json, ai_review_json,
+                   warnings_json, pec_score, classification, dimensions_json
+               )
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 datetime.now(timezone.utc).isoformat(),
                 result["url"],
                 result.get("pages_reviewed", 0),
+                1 if result.get("is_ecommerce", True) else 0,
+                result.get("qualification_status", "qualified"),
+                json.dumps(result.get("ecommerce_evidence", []), ensure_ascii=False),
+                result.get("confidence_score", 0),
+                result.get("confidence_label", "No disponible"),
+                json.dumps(result.get("confidence_reasons", []), ensure_ascii=False),
+                json.dumps(result.get("brand_assets", {}), ensure_ascii=False),
+                json.dumps(result.get("ai_review"), ensure_ascii=False) if result.get("ai_review") else None,
                 json.dumps(result.get("warnings", []), ensure_ascii=False),
                 result["pec_score"],
                 result["classification"],
@@ -131,6 +167,12 @@ def get_audit(audit_id: int) -> dict | None:
         conn.close()
     result = dict(audit)
     result["warnings"] = json.loads(result.pop("warnings_json"))
+    result["is_ecommerce"] = bool(result.get("is_ecommerce", 1))
+    result["ecommerce_evidence"] = json.loads(result.pop("ecommerce_evidence_json", "[]") or "[]")
+    result["confidence_reasons"] = json.loads(result.pop("confidence_reasons_json", "[]") or "[]")
+    result["brand_assets"] = json.loads(result.pop("brand_assets_json", "{}") or "{}")
+    ai_review_raw = result.pop("ai_review_json", None)
+    result["ai_review"] = json.loads(ai_review_raw) if ai_review_raw else None
     result["dimension_scores"] = json.loads(result.pop("dimensions_json"))
     result["factors"] = [{**dict(row), "id": row["factor_id"]} for row in factors]
     return result

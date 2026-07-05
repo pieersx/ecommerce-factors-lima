@@ -1,5 +1,7 @@
 import unittest
 
+from bs4 import BeautifulSoup
+
 from agents.factor_identification import load_catalog
 from agents.web_extraction import WebExtractionAgent
 
@@ -28,3 +30,21 @@ class CatalogAndExtractionTests(unittest.TestCase):
         )
         self.assertIsNone(response)
         self.assertIn("bloqueó", warning)
+
+    def test_brand_assets_prefers_open_graph_image(self):
+        html = """
+        <html>
+          <head>
+            <meta property="og:site_name" content="Tienda Demo">
+            <meta property="og:image" content="/brand.png">
+            <link rel="icon" href="/favicon.ico">
+          </head>
+        </html>
+        """
+        assets = WebExtractionAgent()._brand_assets(
+            BeautifulSoup(html, "html.parser"),
+            "https://example.com/",
+        )
+        self.assertEqual(assets["brand_name"], "Tienda Demo")
+        self.assertEqual(assets["logo_url"], "https://example.com/brand.png")
+        self.assertEqual(assets["logo_source"], "Open Graph image")

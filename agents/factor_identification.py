@@ -94,10 +94,10 @@ class FactorIdentificationAgent:
             return ("present", "Se encontró meta viewport.", page["url"]) if page else ("absent", "No se encontró meta viewport en las páginas revisadas.", audit_url)
 
         patterns = {
-            "navigation": r"<nav\b|menu|categor[ií]as",
-            "search": r"type=[\"']search|buscar productos|b[uú]squeda",
-            "catalog": r"cat[aá]logo|colecci[oó]n|productos|<article",
-            "product": r"descripci[oó]n|a[ñn]adir al carrito|agregar al carrito",
+            "navigation": r"<nav\b|men[uú] principal|categor[ií]as de productos|/categor[ií]a|/collections?",
+            "search": r"type=[\"']search|buscar productos|b[uú]squeda de productos",
+            "catalog": r"cat[aá]logo|colecci[oó]n|productos|/products?|/collections?|<article[^>]+product",
+            "product": r"descripci[oó]n del producto|a[ñn]adir al carrito|agregar al carrito|sku|stock",
             "price_stock": r"(?:S/|US\$|\$)\s?\d|stock|disponible|agotado",
             "cart": r"carrito|cart|checkout|finalizar compra",
             "payments": r"visa|mastercard|yape|plin|paypal|culqi|mercado pago|m[eé]todos? de pago",
@@ -113,8 +113,8 @@ class FactorIdentificationAgent:
             "legal_id": r"\bruc\b\s*[:#-]?\s*\d{8,11}|raz[oó]n social|domicilio fiscal|av\.|jr\.|calle",
             "coverage": r"cobertura|env[ií]os a|entregamos en|lima metropolitana|zonas de entrega",
             "social": r"instagram\.com|facebook\.com|tiktok\.com|linkedin\.com|youtube\.com",
-            "promotions": r"oferta|promoci[oó]n|descuento|\bcyber\b|\bsale\b",
-            "marketplace": r"mercadolibre|falabella|amazon|ripley|linio",
+            "promotions": r"\b(oferta|promoci[oó]n|descuento|cyber|sale)\b.*(?:producto|compra|precio|tienda)|(?:producto|compra|precio|tienda).*\b(oferta|promoci[oó]n|descuento|cyber|sale)\b",
+            "marketplace": r"mercadolibre\.|falabella\.|amazon\.|ripley\.|linio\.",
             "reviews": r"rese[ñn]as|testimonios|opiniones de clientes|calificaci[oó]n",
             "trust": r"compra segura|pago seguro|sitio seguro|ssl|protecci[oó]n al comprador",
             "about": r"nosotros|nuestra historia|qui[eé]nes somos",

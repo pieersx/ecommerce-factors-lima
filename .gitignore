@@ -40,6 +40,13 @@ build/
 # Logs
 *.log
 
+# Codex/local agent files
+.agents/
+skills-lock.json
+
+# Generated test reports
+data/test_*.pdf
+
 # Documents
 *.docx
 *.doc
