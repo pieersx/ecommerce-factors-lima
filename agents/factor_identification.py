@@ -24,7 +24,7 @@ def load_catalog() -> list[dict]:
         return json.load(handle)
 
 
-def _query_pagespeed(url: str, api_key: str, timeout: int = 30) -> tuple[dict | None, str | None]:
+def _query_pagespeed(url: str, api_key: str, timeout: int = 90) -> tuple[dict | None, str | None]:
     """Call PageSpeed Insights and retain a safe, user-facing failure reason."""
     if requests is None:
         return None, "La librería requests no está disponible para consultar Google PageSpeed."
@@ -73,7 +73,8 @@ class FactorIdentificationAgent:
             api_key = os.getenv("PAGESPEED_API_KEY", "")
             if not api_key:
                 return "not_evaluable", "No evaluable automáticamente sin una API de rendimiento configurada.", audit_url
-            result, api_error = _query_pagespeed(audit_url, api_key)
+            timeout = int(os.getenv("PAGESPEED_TIMEOUT_SECONDS", "90"))
+            result, api_error = _query_pagespeed(audit_url, api_key, timeout=timeout)
             if result is None:
                 return "not_evaluable", api_error or "No se pudo obtener métricas de rendimiento de la API.", audit_url
             perf_score = result.get("categories", {}).get("performance", {}).get("score", 0)
